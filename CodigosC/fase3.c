@@ -2,6 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 #define TAM 199999
+#define ESPERA 1000
 
 //Estrutura que guarda variaveis de tipos diferentes dentro de uma so 
 typedef struct{
@@ -250,9 +251,11 @@ int main(){
     char cpf_busca[13];
     char nome[100];
     char nascimento[12];
-    paciente heap[100];
-    relatorio relat[100];
+    paciente heap[ESPERA];
+    relatorio relat[ESPERA];
     int opcao, buscado, risco, quantidade = 0,  eventos = 0, qnt_relatorios = 0;
+
+    inicializarTabela(cpfs);
 
     while(1){
         printf("=====SISTEMA DE ATENDIMENTO=====\n");

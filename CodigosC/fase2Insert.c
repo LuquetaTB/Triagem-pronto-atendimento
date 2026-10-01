@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<string.h>
+#define TAM 100000
+#define ESPERA 1000
 
 void cadastrar(char cpfs[][13], char cpf[], char nomes[][100], char nome[], char 
 nascimentos[][12], char nascimento[], int *qnt_cadastros, int *eventos){
@@ -13,11 +15,11 @@ nascimentos[][12], char nascimento[], int *qnt_cadastros, int *eventos){
     (*qnt_cadastros)++;
 }
 
-int buscar_cadastro(char cpfs[][13], char cpf_busca[], int *eventos){
+int buscar_cadastro(char cpfs[][13], char cpf_busca[], int *qnt_cadastros, int *eventos){
     (*eventos)++;   
     /*Procura pelo cpf no cadastro geral, e, caso encontre gera o indice aonde foi
     encontrado aquele cpf.*/ 
-    for(int i=0; i<10; i++){
+    for(int i=0; i<*qnt_cadastros; i++){
         if(strcmp(cpfs[i], cpf_busca) == 0){
             return i;
         }
@@ -27,12 +29,12 @@ int buscar_cadastro(char cpfs[][13], char cpf_busca[], int *eventos){
 }
 
 int dar_entrada(char cpfs[][13], char fila_geral[][13],
-char cpf_busca[],int riscos[],int eventos_entrada[], int risco,int *quantidade, int *eventos){
+char cpf_busca[],int riscos[],int eventos_entrada[], int risco, int *qnt_cadastros, int *quantidade, int *eventos){
     (*eventos)++;
     int encontrou = 0;
     /*For vai buscar pelo cpf informado se ele esta cadastrado na, caso nao esteja a
     função retorna 0.*/
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < *qnt_cadastros; i++){
 
         if(strcmp(cpfs[i], cpf_busca) == 0){
         encontrou = 1;
@@ -45,7 +47,7 @@ char cpf_busca[],int riscos[],int eventos_entrada[], int risco,int *quantidade, 
     }
     /*Esse for vai buscar o cpf informado na fila geral, para ver se o paciente ja nao se
     encontra nela.*/
-    for(int i = 0; i<10; i++){
+    for(int i = 0; i<*quantidade; i++){
         if(strcmp(fila_geral[i], cpf_busca) == 0){
             return 1;
         }
@@ -157,17 +159,17 @@ void relatorio_do_dia(char fila_relatorio[][13], int eventos_final[],int *qnt_re
 
 int main(){
     char cpf[13];
-    char cpfs[10][13];
+    char cpfs[TAM][13];
     char cpf_busca[13];
     char nome[100];
-    char nomes[10][100];
+    char nomes[TAM][100];
     char nascimento[12];
-    char nascimentos[10][12];
-    char fila_geral[200][13];
-    char fila_relatorio[200][13];
-    int riscos[200];
-    int eventos_final[200];
-    int eventos_entrada[200];
+    char nascimentos[TAM][12];
+    char fila_geral[ESPERA][13];
+    char fila_relatorio[ESPERA][13];
+    int riscos[ESPERA];
+    int eventos_final[ESPERA];
+    int eventos_entrada[ESPERA];
     int buscado, quantidade = 0, risco, eventos =0, qnt_relatorios =0,qnt_cadastros =0, opcao;
 
     while(1){
@@ -204,7 +206,7 @@ int main(){
                 printf("Informe o cpf que quer buscar:\n");
                 fgets(cpf_busca, 13, stdin);
                 cpf_busca[strcspn(cpf_busca, "\n")]='\0';
-                buscado = buscar_cadastro(cpfs, cpf_busca, &eventos);
+                buscado = buscar_cadastro(cpfs, cpf_busca, &qnt_cadastros, &eventos);
                 if(buscado == -1){
                     printf("cadastro nao encontado\n");
                 }else{
@@ -222,7 +224,7 @@ int main(){
                 scanf("%d", &risco);
 
                 buscado = dar_entrada(cpfs, fila_geral, cpf_busca, riscos, eventos_entrada,
-                risco, &quantidade, &eventos);
+                risco, &qnt_cadastros, &quantidade, &eventos);
 
                 if(buscado==0){
                     printf("Cpf nao encontrado\n");

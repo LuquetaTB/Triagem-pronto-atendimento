@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<string.h>
+#define TAM 100000
+#define ESPERA 1000
 
 void cadastrar(char cpfs[][13], char cpf[], char nomes[][100], char nome[], char 
 nascimentos[][12], char nascimento[], int *qnt_cadastros, int *eventos){
@@ -150,17 +152,17 @@ void relatorio_do_dia(char fila_relatorio[][13], int eventos_final[],int *qnt_re
 
 int main(){
     char cpf[13];
-    char cpfs[10][13];
+    char cpfs[TAM][13];
     char cpf_busca[13];
     char nome[100];
-    char nomes[10][100];
+    char nomes[TAM][100];
     char nascimento[12];
-    char nascimentos[10][12];
-    char fila_geral[200][13];
-    char fila_relatorio[200][13];
-    int riscos[200];
-    int eventos_final[200];
-    int eventos_entrada[200];
+    char nascimentos[TAM][12];
+    char fila_geral[ESPERA][13];
+    char fila_relatorio[ESPERA][13];
+    int riscos[ESPERA];
+    int eventos_final[ESPERA];
+    int eventos_entrada[ESPERA];
     int buscado, quantidade = 0, risco, eventos =0, qnt_relatorios =0,qnt_cadastros =0, opcao;
 
     while(1){
